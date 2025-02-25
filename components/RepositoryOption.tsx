@@ -1,31 +1,31 @@
-import React from 'react'
-import { Combobox } from '@headlessui/react'
-import Image from 'next/image'
-import { classNames } from '../lib/utils'
+import { ComboboxOption } from '@headlessui/react'
 import {
   CpuChipIcon,
   StarIcon,
   ViewfinderCircleIcon,
 } from '@heroicons/react/24/outline'
+import { clsxm } from '@zolplay/clsxm'
+import Image from 'next/image'
+
 
 export function RepositoryOption() {
   return (
-    <Combobox.Option
+    <ComboboxOption
       value={'repository_name'}
-      className={({ active }) =>
-        classNames(
+      className={({ selected }) =>
+        clsxm(
           'flex flex-col cursor-default select-none justify-center px-4 py-2 space-y-1.5',
-          active ? 'bg-indigo-300/20 text-white' : 'text-gray-300'
+          selected ? 'bg-indigo-300/20 text-white' : 'text-gray-300'
         )
       }
     >
-      {({ active }) => (
+      {({ selected }) => (
         <>
           <header className="flex items-center">
             <CpuChipIcon
-              className={classNames(
+              className={clsxm(
                 'h-5 w-5 flex-none',
-                active ? 'text-white' : 'text-gray-200'
+                selected ? 'text-white' : 'text-gray-200'
               )}
               aria-hidden="true"
             />
@@ -81,6 +81,6 @@ export function RepositoryOption() {
           </footer>
         </>
       )}
-    </Combobox.Option>
+    </ComboboxOption>
   )
 }
