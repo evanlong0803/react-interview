@@ -36,7 +36,7 @@ export function RepositoryOption() {
             <div className="flex items-center space-x-2">
               {/* Owner */}
               <span className="flex items-center space-x-1">
-                <span className="w-4 h-4 rounded-full overflow-hidden">
+                <span className="size-4 rounded-full overflow-hidden">
                   <Image
                     src={'https://avatars.githubusercontent.com/u/10830749?v=4'}
                     alt="User Avatar"

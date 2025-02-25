@@ -3,6 +3,7 @@ import React from 'react'
 import { Combobox, ComboboxInput, ComboboxOptions, Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
 import { RepositoryOption } from './RepositoryOption'
 import { FaceSmileIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+import { clsxm } from '@zolplay/clsxm'
 
 type Repository = {
   id: string
@@ -52,7 +53,7 @@ export default function Example() {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-900 bg-opacity-40 transition-opacity" />
+          <div className="fixed inset-0 bg-gray-900/40 transition-opacity" />
         </TransitionChild>
 
         <div className="fixed inset-0 z-10 overflow-y-auto p-4 sm:p-6 md:p-20">
@@ -65,7 +66,12 @@ export default function Example() {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <DialogPanel className="mx-auto max-w-xl transform divide-y divide-gray-500 overflow-hidden rounded-2xl shadow-slate-300/10 bg-slate-900/70 shadow-2xl ring-1 ring-sky-500 ring-opacity-5 backdrop-blur-xl backdrop-filter transition-all">
+            <DialogPanel
+              className={clsxm(
+                'mx-auto max-w-xl transform divide-y divide-gray-500 overflow-hidden rounded-2xl shadow-slate-300/10 bg-slate-900/70 shadow-2xl  transition-all',
+                'backdrop-blur-xl backdrop-filter'
+              )}
+            >
               <Combobox
                 value=""
                 onChange={(item) => {
