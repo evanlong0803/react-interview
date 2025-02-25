@@ -95,7 +95,7 @@ export default function Example() {
                   static
                   className="max-h-80 scroll-py-10 scroll-pb-2 space-y-4 overflow-y-auto p-4 pb-2"
                 >
-                  <li>
+                  <li className='list-none'>
                     <h2 className="text-xs font-semibold text-gray-200">
                       Repositories
                     </h2>
