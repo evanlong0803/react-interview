@@ -1,41 +1,42 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 import React from 'react'
-import { Combobox, ComboboxInput, ComboboxOptions, Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxOptions,
+  Dialog,
+  DialogPanel,
+  Transition,
+  TransitionChild
+} from '@headlessui/react'
 import { RepositoryOption } from './RepositoryOption'
-import { FaceSmileIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+import {
+  ArrowTurnDownLeftIcon,
+  FaceSmileIcon,
+  MagnifyingGlassIcon
+} from '@heroicons/react/20/solid'
 import { clsxm } from '@zolplay/clsxm'
-
-type Repository = {
-  id: string
-  name: string
-  full_name: string
-  open_issues_count: number
-  stargazers_count: number
-  forks_count: number
-  url: string
-  language: string
-  owner: {
-    login: string
-    avatar_url: string
-  }
-}
-
-type APIResponse = { items: Repository[] }
 
 export default function Example() {
   const [open, setOpen] = React.useState(true)
 
-  React.useEffect(() => {
-    if (!open) {
-      setTimeout(() => {
-        setOpen(true)
-      }, 500)
-    }
-  }, [open])
-
   const [rawQuery, setRawQuery] = React.useState('')
-  const query = rawQuery.toLowerCase().replace(/^[#>]/, '')
+  // const query = () => rawQuery.toLowerCase().replace(/^[#>]/, '')
+
+  const [items, setItems] = React.useState<Repository[]>([])
+
+  const getSearchRepositories = async (q: string | null) => {
+    const result = await fetch(`/api/search?q=${q}`)
+    const { items }: APIResponse = await result.json()
+    setItems(items)
+  }
+
+  // React.useEffect(() => {
+  //   setTimeout(() => {
+  //     getSearchRepositories(rawQuery || null)
+  //   }, 300)
+  // }, [rawQuery])
 
   return (
     <Transition
@@ -74,9 +75,9 @@ export default function Example() {
               )}
             >
               <Combobox
-                value=""
+                value={rawQuery}
                 onChange={(item) => {
-                  console.info('You have selected', item)
+                  console.info('You have selected', item, typeof item)
                 }}
               >
                 <div className="relative">
@@ -84,25 +85,38 @@ export default function Example() {
                     className="pointer-events-none absolute top-3.5 left-4 h-5 w-5 text-gray-500"
                     aria-hidden="true"
                   />
-                  <ComboboxInput
-                    className="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-100 placeholder-gray-500 focus:ring-0 sm:text-sm focus:outline-0"
-                    placeholder="Search GitHub repos..."
-                    onChange={(event) => setRawQuery(event.target.value)}
-                  />
+                  <div className="flex items-center justify-between">
+                    <ComboboxInput
+                      className="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-100 placeholder-gray-500 focus:ring-0 sm:text-sm focus:outline-0"
+                      autoComplete="off"
+                      placeholder="Search GitHub repos..."
+                      onChange={(event) => setRawQuery(event.target.value)}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter') {
+                          getSearchRepositories(rawQuery)
+                          setRawQuery('')
+                        }
+                      }}
+                    />
+                    <ArrowTurnDownLeftIcon className="absolute top-4 right-4 size-4 text-gray-500" />
+                  </div>
                 </div>
 
                 <ComboboxOptions
                   static
                   className="max-h-80 scroll-py-10 scroll-pb-2 space-y-4 overflow-y-auto p-4 pb-2"
                 >
-                  <li className='list-none'>
+                  <li className="list-none">
                     <h2 className="text-xs font-semibold text-gray-200">
                       Repositories
                     </h2>
                     <ul className="-mx-4 mt-2 text-sm text-gray-700 space-y-0.5">
+                      {items.map((item) => (
+                        <RepositoryOption key={item.id} item={item} />
+                      ))}
+                      {/* <RepositoryOption />
                       <RepositoryOption />
-                      <RepositoryOption />
-                      <RepositoryOption />
+                      <RepositoryOption /> */}
                     </ul>
                   </li>
                 </ComboboxOptions>
